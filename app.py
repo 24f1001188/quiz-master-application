@@ -3,6 +3,7 @@ from flask import Flask,render_template
 app=Flask(__name__)
 
 import configuration
+import models
 import routes
 
 if __name__=="__main__":
