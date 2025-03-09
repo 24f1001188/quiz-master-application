@@ -1,0 +1,12 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Admin Dashboard
+{% endblock %}       
+
+        
+{% block BODY %} 
+    <h2>Welcome Admin.Your username is {{admin.username}} !!</h2>
+    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
+    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
+{% endblock %} 

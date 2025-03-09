@@ -1,0 +1,14 @@
+{% extends 'basic_layout.html' %}
+
+{% block TITLE %}
+    Registration Success
+{% endblock %} 
+
+{% block BODY %}
+        <div>
+         <p><em>{{ name }}, You have been registered succesfully!!</em></p>
+        </div>
+        <div>
+            <a href="{{url_for('user_login')}}">Click here to login</a>
+        </div>
+{% endblock %}

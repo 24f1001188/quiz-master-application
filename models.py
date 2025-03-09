@@ -1,5 +1,7 @@
 from app import app
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash,check_password_hash
+
 db=SQLAlchemy(app)
 
 class Admin(db.Model):
@@ -63,3 +65,11 @@ class Scores(db.Model):
 
 with app.app_context():
     db.create_all()
+
+    #creating admin because Admin is predefined, no registration allowed
+    admin=Admin.query.first()
+    if not admin:
+        passhash=generate_password_hash('admin12')
+        admin=Admin(username='adminhema@gmail.com',passhash=passhash)
+        db.session.add(admin)
+        db.session.commit()

@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUIZ MASTER</title>
-</head>
-<body>
-     <h1>hello {{name}}</h1>
-</body>
-</html>
+{% extends 'basic_layout.html' %}
+
+{% block TITLE %}
+    Home
+{% endblock %} 
+   
+{% block BODY %}
+
+    <div>
+     <p><em>Quiz your way to success!</em></p>
+    </div>
+    <a href="{{ url_for('user_login') }}"><button>USER LOGIN</button></a>
+    <a href="{{ url_for('admin_login')}}"><button>ADMIN LOGIN</button></a>
+    <a href="{{ url_for('new_user_registration')}}"><button>REGISTER</button></a>
+
+{% endblock %}

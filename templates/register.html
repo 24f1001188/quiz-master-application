@@ -1,0 +1,22 @@
+{% extends 'basic_layout.html' %}
+
+{% block TITLE %}
+    New User Registration
+{% endblock %} 
+
+{% block BODY %}
+        <h2>New User Registration</h2>
+        <form action="{{ url_for('reg_next_page') }}" method="POST">
+            <label for="full_name" >Full Name</label>
+            <input type="text" name="full_name" required><br><br>
+    
+            <label for="qualification">Qualification</label>
+            <input type="text" name="qualification" required><br><br>
+    
+            <label for="dob">DOB (dd/mm/yyyy)</label>
+            <input type="date" name="dob" required><br><br>
+    
+            <a href="{{ url_for('home') }}"><button type="button">Home</button></a>
+            <button type="submit">Next</button>
+        </form>
+{% endblock %}

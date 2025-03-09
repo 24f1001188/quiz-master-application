@@ -1,0 +1,31 @@
+{% extends 'basic_layout.html' %}
+
+{% block TITLE %}
+    User Login
+{% endblock %} 
+
+{% block BODY %}
+    <div>
+     <h2>User Login</h2>
+    </div>
+    <form action="" class="login-page" method="POST">
+        <div class="form-group">
+            <label for="username">Username (E-mail)</label>
+            <input type="email" id="username" name="username" required>
+        </div><br>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div><br>
+        <div class="form-group">
+            <button type="submit">Login</button>
+        </div>
+    </form><br>
+    <div>
+    <a href="{{url_for('home')}}"><button>Back</button></a>
+    <a href="{{url_for('new_user_registration')}}"><em>New User?</em></a>
+    </div>
+{% endblock %}
+    
+
+
