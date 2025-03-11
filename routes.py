@@ -4,6 +4,7 @@ from models import db,Admin,User,Subject,Chapter,Quiz,Questions,Scores
 from werkzeug.security import generate_password_hash,check_password_hash
 from datetime import datetime
 from functools import wraps
+import re
 
 @app.route('/')
 def home():
@@ -152,7 +153,8 @@ def user_dashboard():
 @admin_auth
 def admin_dashboard():
         admin=Admin.query.get(session['admin_id'])
-        return render_template('admin_dashboard.html',admin=admin)
+        subjects=Subject.query
+        return render_template('admin_dashboard.html',admin=admin,subjects=subjects)
     
 @app.route('/user_logout')
 @user_auth
@@ -232,4 +234,312 @@ def change_pswd_admin_post():
         flash('Password Updated successfully!!')
         return redirect(url_for('admin_dashboard'))
 
+
+@app.route('/add/subject')
+@admin_auth
+def add_sub():
+     return render_template('add_sub.html')
+
+@app.route('/add/subject',methods=['POST'])
+@admin_auth
+def add_sub_post():
+     sub_name=request.form.get('Name')
+     des=request.form.get('Description')
+
+     if not sub_name or not des:
+          flash("Filling out all the fields is mandatory")
+          return redirect(url_for('add_sub'))
+
+     subject=Subject(Name=sub_name,Description=des)
+     db.session.add(subject)
+     db.session.commit()
+
+     flash('Subject added successfully!!')
+     return redirect(url_for('admin_dashboard'))
+
+@app.route('/display/chapters/<int:id>/')
+@admin_auth
+def display_chap(id):
+     subject=Subject.query.get(id)
+     chapters=Chapter.query.filter_by(subject_id=id)
+     return render_template('chap.html',subject=subject,chapters=chapters)
+
+@app.route('/edit/subject/<int:id>/')
+@admin_auth
+def edit_sub(id):
+     subject=Subject.query.get(id)
+     return render_template('edit_sub.html',subject=subject)
+
+@app.route('/edit/subject/<int:id>/',methods=['POST'])
+@admin_auth
+def edit_sub_post(id):
+     sub=Subject.query.get(id)
+     name=request.form.get('Name')
+     des=request.form.get('Description')
+     if not name or not des:
+          flash("Filling out all the fields is mandatory")
+          return redirect(url_for('edit_sub',id=id))
+     sub.Name=name
+     sub.Description=des
+     db.session.commit()
+     flash('Updated subject successfully!!')
+     return redirect(url_for('admin_dashboard'))
+
+@app.route('/delete/subject/<int:id>/')
+@admin_auth
+def delete_sub(id):
+     sub=Subject.query.get(id)
+     if sub:
+        db.session.delete(sub)
+        db.session.commit()
+    
+     flash('Subject deleted Successfully!!')
+     return redirect(url_for('admin_dashboard'))
+
+@app.route('/add/chapter/<int:id>')
+@admin_auth
+def add_chap(id):
+     return render_template('add_chap.html')
+
+@app.route('/add/chapter/<int:id>',methods=['POST'])
+@admin_auth
+def add_chap_post(id):
+     chap_name=request.form.get('Name')
+     des=request.form.get('Description')
+
+     if not chap_name or not des:
+          flash("Filling out all the fields is mandatory")
+          return redirect(url_for('add_chap',id=id))
+
+     chapter=Chapter(Name=chap_name,Description=des,subject_id=id)
+     db.session.add(chapter)
+     db.session.commit()
+    
+     sub=Subject.query.get(id)
+
+     flash(chapter.Name+' Chapter added successfully to the '+ sub.Name + ' subject!!')
+     return redirect(url_for('display_chap',id=id))
+
+
+@app.route('/edit/chapter/<int:id>')
+@admin_auth
+def edit_chap(id):
+     chap=Chapter.query.get(id)
+     return render_template('edit_chap.html',chapter=chap)
+
+@app.route('/edit/chapter/<int:id>/',methods=['POST'])
+@admin_auth
+def edit_chap_post(id):
+     chap=Chapter.query.get(id)
+     name=request.form.get('Name')
+     des=request.form.get('Description')
+     if not name or not des:
+          flash("Filling out all the fields is mandatory")
+          return redirect(url_for('edit_chap',id=id))
+     chap.Name=name
+     chap.Description=des
+     db.session.commit()
+     flash('Updated chapter successfully!!')
+     return redirect(url_for('display_chap',id=chap.subject_id))
+
+@app.route('/delete/chap/<int:id>')
+@admin_auth
+def delete_chap(id):
+     
+     chapter=Chapter.query.get(id)
+     sub_id=chapter.subject_id
+
+     if chapter:
+        db.session.delete(chapter)
+        db.session.commit()
+    
+     flash('Chapter deleted successfully!!')
+     return redirect(url_for('display_chap',id=sub_id))
+
+
+
+@app.route('/display/quizzes/<int:id>')
+@admin_auth
+def display_quiz(id):
+     chapter=Chapter.query.get(id)
+     quizzes=Quiz.query.filter_by(chapter_id=id)
+     return render_template('quiz.html',quizzes=quizzes,chapter=chapter)
+
+@app.route('/add/quiz/<int:id>')
+@admin_auth
+def add_quiz(id):
+     return render_template('add_quiz.html')
+
+@app.route('/add/quiz/<int:id>',methods=['POST'])
+@admin_auth
+def add_quiz_post(id):
+    dur_str=request.form.get('Duration')
+    date_sche_str=request.form.get('Date')
+    rem=request.form.get('Remarks')
+    tot_marks=request.form.get('tot_marks')
+    qual_marks=request.form.get('Q_marks')
+
+    date_sche=datetime.strptime(date_sche_str, '%Y-%m-%d').date()
+    pattern = r"^([0-4]):([0-5][0-9])$"
+
+    if not dur_str or not date_sche_str or not tot_marks:
+        flash("Filling out Duration,Scheduled Date and Total marks fields is mandatory")
+        return redirect(url_for('add_quiz',id=id))
+    
+    if not re.match(pattern, dur_str):
+        flash("Invalid time format! Use h:mm and max 5 hours.")
+        return redirect(url_for("add_quiz",id=id))
+
+    quiz=Quiz(chapter_id=id,date_of_quiz=date_sche,time_duration=dur_str,Remarks=rem,total_marks=tot_marks,Qualifying_marks=qual_marks)
+    db.session.add(quiz)
+    db.session.commit()
+    
+    chap=Chapter.query.get(id)
+
+    flash('Quiz added successfully to the '+ chap.Name + ' chapter!!')
+    return redirect(url_for('display_quiz',id=id))
+
+
+@app.route('/display/questions/<int:id>/')
+@admin_auth
+def display_questions(id):
+     quiz=Quiz.query.get(id)
+     questions=Questions.query.filter_by(quiz_id=id)
+     return render_template('questions.html',quiz=quiz,questions=questions)
+
+
+@app.route('/edit/quiz/<int:id>')
+@admin_auth
+def edit_quiz(id):
+     quiz=Quiz.query.get(id)
+     return render_template('edit_quiz.html',quiz=quiz)
+
+@app.route('/edit/quiz/<int:id>',methods=['POST'])
+@admin_auth
+def edit_quiz_post(id):
+    dur_str=request.form.get('Duration')
+    date_sche_str=request.form.get('Date')
+    rem=request.form.get('Remarks')
+    tot_marks=request.form.get('tot_marks')
+    qual_marks=request.form.get('Q_marks')
+
+    date_sche=datetime.strptime(date_sche_str, '%Y-%m-%d').date()
+    pattern = r"^([0-4]):([0-5][0-9])$"
+
+    if not dur_str or not date_sche_str or not tot_marks:
+        flash("Filling out Duration,Scheduled Date and Total marks fields is mandatory")
+        return redirect(url_for('edit_quiz',id=id))
+    
+    if not re.match(pattern, dur_str):
+        flash("Invalid time format! Use h:mm and max 5 hours.")
+        return redirect(url_for("edit_quiz",id=id))
+
+    quiz=Quiz.query.get(id)
+    quiz.date_of_quiz=date_sche
+    quiz.time_duration=dur_str
+    quiz.Remarks=rem
+    quiz.Qualifying_marks=qual_marks
+    quiz.total_marks=tot_marks
+    db.session.commit()
+    
+    chap_id=quiz.chapter_id
+
+    flash('Quiz editted successfully!!')
+    return redirect(url_for('display_quiz',id=chap_id))
+
+
+@app.route('/delete/quiz/<int:id>')
+@admin_auth
+def delete_quiz(id):
+    quiz=Quiz.query.get(id)
+    
+    if quiz:
+        db.session.delete(quiz)
+        db.session.commit()
+    
+    flash('Quiz deleted successfully!!')
+    
+    return redirect(url_for('display_quiz',id=quiz.chapter_id))
+
+@app.route('/edit/question/<int:id>')
+@admin_auth
+def edit_question(id):
+     question=Questions.query.get(id)
+     return render_template('edit_question.html',question=question)
+
+
+@app.route('/edit/question/<int:id>',methods=['POST'])
+@admin_auth
+def edit_question_post(id):
+    ques_stmt=request.form.get('q_stmt')
+    o1=request.form.get('op1')
+    o2=request.form.get('op2')
+    o3=request.form.get('op3')
+    o4=request.form.get('op4')
+    ans_op=request.form.get('ans_op')
+
+    if not ques_stmt or not o1 or not o2 or not o3 or not o4 or not ans_op:
+        flash("Filling out all the fields is mandatory")
+        return redirect(url_for('edit_question',id=id))
+    
+    question=Questions.query.get(id)
+    question.question_statement=ques_stmt
+    question.Option_1=o1
+    question.Option_2=o2
+    question.Option_3=o3
+    question.Option_4=o4
+    question.Answer_option_no=ans_op
+
+    db.session.commit()
+    
+    quiz_id=question.quiz_id
+
+    flash('Question editted successfully!!')
+    return redirect(url_for('display_questions',id=quiz_id))
+
+@app.route('/add/question/<int:id>')
+@admin_auth
+def add_question(id):
+     return render_template('add_question.html')
+
+@app.route('/add/question/<int:id>',methods=['POST'])
+@admin_auth
+def add_question_post(id):
+    ques_stmt=request.form.get('q_stmt')
+    o1=request.form.get('op1')
+    o2=request.form.get('op2')
+    o3=request.form.get('op3')
+    o4=request.form.get('op4')
+    ans_op=request.form.get('ans_op')
+
+    if not ques_stmt or not o1 or not o2 or not o3 or not o4 or not ans_op:
+        flash("Filling out all the fields is mandatory")
+        return redirect(url_for('add_question',id=id))
+
+    question=Questions(quiz_id=id,question_statement=ques_stmt,Option_1=o1,Option_2=o2,Option_3=o3,Option_4=o4,Answer_option_no=ans_op)
+    db.session.add(question)
+    db.session.commit()
+
+    flash('Question added successfully to the Quiz!!')
+    return redirect(url_for('display_questions',id=id))
+
+@app.route('/delete/question/<int:id>')
+@admin_auth
+def delete_question(id):
+     question=Questions.query.get(id)
+     
+
+     if question:
+        db.session.delete(question)
+        db.session.commit()
+    
+     flash('Question deleted successfully!!')
+
+     return redirect(url_for('display_questions',id=question.quiz_id))
+
+@app.route('/display/user_details')
+@admin_auth
+def display_user_details():
+     users=User.query.all()
+     return render_template('user_details.html',users=users)
 

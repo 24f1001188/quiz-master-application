@@ -1,0 +1,58 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Chapters
+{% endblock %}       
+
+        
+{% block BODY %} 
+
+<div style="text-align: right;">
+    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
+    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
+</div>
+
+<a href="{{url_for('add_chap',id=subject.id)}}" class="btn btn-success">
+    <i class="fas fa-add"></i>
+    ADD
+</a>
+
+<h5 class="display-5">Chapters of {{subject.Name}}</h5>
+
+
+<table class="table table-striped ">
+    <thead class='table-info'>
+        <tr>
+            <th>Chapter ID</th>
+            <th>Chapter Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for chapter in chapters%}
+        <tr>
+            <td>{{chapter.id}}</td>
+            <td>{{chapter.Name}}</td>
+            <td>{{chapter.Description}}</td>
+            <td>
+                <div>
+                <a href="{{url_for('display_quiz',id=chapter.id)}}" class="btn btn-primary">
+                Quizzes</a>
+                <a href="{{url_for('edit_chap',id=chapter.id)}}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i>Edit
+                </a>
+                <a href="{{url_for('delete_chap',id=chapter.id)}}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>Delete
+                    
+                </a>
+             </div>
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+
+</table>
+   
+
+{% endblock %} 

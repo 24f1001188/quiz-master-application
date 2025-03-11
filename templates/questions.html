@@ -1,0 +1,64 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Questions
+{% endblock %}       
+
+        
+{% block BODY %} 
+
+<div style="text-align: right;">
+    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
+    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
+</div>
+
+<a href="{{url_for('add_question',id=quiz.id)}}" class="btn btn-success">
+    <i class="fas fa-add"></i>
+    ADD
+</a>
+
+<h5 class="display-5">Questions </h5>
+
+
+<table class="table table-striped ">
+    <thead class='table-info'>
+        <tr>
+            <th>Question ID</th>
+            <th>Question</th>
+            <th>Option 1</th>
+            <th>Option 2</th>
+            <th>Option 3</th>
+            <th>Option 4</th>
+            <th>Answer Option No</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for question in questions%}
+        <tr>
+            <td>{{question.id}}</td>
+            <td>{{question.question_statement}}</td>
+            <td>{{question.Option_1}}</td>
+            <td>{{question.Option_2}}</td>
+            <td>{{question.Option_3}}</td>
+            <td>{{question.Option_4}}</td>
+            <td>{{question.Answer_option_no}}</td>
+            <td>
+                <div>
+                <a href="{{url_for('edit_question',id=question.id)}}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i>Edit
+                </a>
+                <a href="{{url_for('delete_question',id=question.id)}}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>Delete
+                    
+                </a>
+             </div>
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+
+</table>
+   
+
+{% endblock %} 

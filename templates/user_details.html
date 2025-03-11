@@ -1,0 +1,44 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Users
+{% endblock %}       
+
+        
+{% block BODY %} 
+
+<div style="text-align: right;">
+    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
+    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
+</div>
+
+
+<h5 class="display-5">Users of Quiz Master Application</h5>
+
+
+<table class="table table-striped ">
+    <thead class='table-info'>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Username(E-mail)</th>
+            <th>Qualification</th>
+            <th>DOB</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users%}
+        <tr>
+            <td>{{user.id}}</td>
+            <td>{{user.Full_Name}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.Qualification}}</td>
+            <td>{{user.DOB}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+
+</table>
+   
+
+{% endblock %} 

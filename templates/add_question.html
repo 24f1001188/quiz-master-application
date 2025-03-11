@@ -1,0 +1,42 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Add Question
+{% endblock %}       
+
+        
+{% block BODY %}
+
+<h5 class="display-5">Add Question</h5><br>
+
+<form action="" method="post" class="form">
+    <div class="form-group">
+        <label for="q_stmt">Question statement :</label>
+        <input type="text" name="q_stmt" id="q_stmt" required>
+    </div><br>
+    <div class="form-group">
+        <label for="op1">Option 1 :</label>
+        <input type="text" name="op1" id="op1" required>
+    </div><br>
+    <div class="form-group">
+        <label for="op2">Option 2 :</label>
+        <input type="text" name="op2" id="op2" required>
+    </div><br>
+    <div class="form-group">
+        <label for="op3">Option 3 :</label>
+        <input type="text" name="op3" id="op3" required>
+    </div><br>
+    <div class="form-group">
+        <label for="op4">Option 4 :</label>
+        <input type="text" name="op4" id="op4" required>
+    </div><br>
+    <div class="form-group">
+        <label for="ans_op">Answer Option Number :</label>
+        <input type="number" name="ans_op" id="ans_op" required>
+    </div><br><br>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Add</button>
+    </div>
+</form>
+
+{% endblock %} 

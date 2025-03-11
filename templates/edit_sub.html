@@ -1,0 +1,26 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Edit Subject
+{% endblock %}       
+
+        
+{% block BODY %}
+
+<h5 class="display-5">Edit Subject</h5><br>
+
+<form action="" method="post" class="form">
+    <div class="form-group">
+        <label for="name">Subject Name :</label>
+        <input type="text" name="Name" id="Name" value={{subject.Name}} required>
+    </div><br>
+    <div class="form-group">
+        <label for="description">Description :</label>
+        <input type="text" name="Description" id="Description" value={{subject.Description}} required>
+    </div><br><br>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Update</button>
+    </div>
+</form>
+
+{% endblock %} 

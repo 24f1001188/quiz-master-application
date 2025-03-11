@@ -1,0 +1,42 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Add Quiz
+{% endblock %}       
+
+        
+{% block BODY %}
+
+<h5 class="display-5">Add Quiz</h5><br>
+
+<form action="" method="post" class="form">
+    <div class="form-group">
+        <label for="date">Date Scheduled :</label>
+        <input type="date" name="Date" id="Date" required>
+    </div><br>
+    <div class="form-group">
+        <label for="duration">Duration :</label>
+        <input type="text" id="Duration" name="Duration" placeholder="h:mm" 
+pattern="^([0-4]):([0-5][0-9])$" required>
+
+    </div><br>
+    <div class="form-group">
+        <label for="tot_marks">Total marks :</label>
+        <input type="number" name="tot_marks" id="tot_marks" required>
+    </div><br>
+    <div class="form-group">
+        <label for="remarks">Remarks :</label>
+        <input type="text" name="Remarks" id="Remarks" >
+    </div><br>
+    
+    <div class="form-group">
+        <label for="Q_marks">Qualifying marks :</label>
+        <input type="number" name="Q_marks" id="Q_marks" >
+    </div><br><br>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Add</button>
+    </div>
+</form>
+
+{% endblock %} 
