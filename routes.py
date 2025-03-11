@@ -147,7 +147,8 @@ def admin_auth(func):
 @user_auth
 def user_dashboard():
         user=User.query.get(session['user_id'])
-        return render_template('user_dashboard.html',user=user)
+        subjects=Subject.query.all()
+        return render_template('user_dashboard.html',user=user,subjects=subjects)
 
 @app.route('/admin_dashboard')
 @admin_auth
@@ -477,6 +478,7 @@ def edit_question_post(id):
     o3=request.form.get('op3')
     o4=request.form.get('op4')
     ans_op=request.form.get('ans_op')
+    ans=request.form.get('ans')
 
     if not ques_stmt or not o1 or not o2 or not o3 or not o4 or not ans_op:
         flash("Filling out all the fields is mandatory")
@@ -489,6 +491,7 @@ def edit_question_post(id):
     question.Option_3=o3
     question.Option_4=o4
     question.Answer_option_no=ans_op
+    question.Answer=ans
 
     db.session.commit()
     
@@ -511,12 +514,13 @@ def add_question_post(id):
     o3=request.form.get('op3')
     o4=request.form.get('op4')
     ans_op=request.form.get('ans_op')
+    ans=request.form.get('ans')
 
-    if not ques_stmt or not o1 or not o2 or not o3 or not o4 or not ans_op:
+    if not ques_stmt or not o1 or not o2 or not o3 or not o4 or not ans_op or not ans:
         flash("Filling out all the fields is mandatory")
         return redirect(url_for('add_question',id=id))
 
-    question=Questions(quiz_id=id,question_statement=ques_stmt,Option_1=o1,Option_2=o2,Option_3=o3,Option_4=o4,Answer_option_no=ans_op)
+    question=Questions(Answer=ans,quiz_id=id,question_statement=ques_stmt,Option_1=o1,Option_2=o2,Option_3=o3,Option_4=o4,Answer_option_no=ans_op)
     db.session.add(question)
     db.session.commit()
 
@@ -542,4 +546,56 @@ def delete_question(id):
 def display_user_details():
      users=User.query.all()
      return render_template('user_details.html',users=users)
+
+@app.route('/display/chapters/user/<int:id>')
+@user_auth
+def display_chap_user(id):
+     chapters=Chapter.query.filter_by(subject_id=id)
+     subject=Subject.query.get(id)
+     return render_template('chap_user.html',chapters=chapters,subject=subject)
+
+@app.route('/display/quiz/user/<int:id>')
+@user_auth
+def display_quiz_user(id):
+     quizzes=Quiz.query.filter_by(chapter_id=id)
+     chapter=Chapter.query.get(id)
+     return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+
+@app.route('/display/questions/user/<int:id>')
+@user_auth
+def display_questions_user(id):
+     questions=Questions.query.filter_by(quiz_id=id)
+     quiz=Quiz.query.get(id)
+     return render_template('questions_user.html',questions=questions,quiz=quiz)
+
+@app.route('/display/questions/user/<int:id>',methods=['POST'])
+@user_auth
+def display_questions_user_post(id):
+     questions=Questions.query.filter_by(quiz_id=id)
+     quiz=Quiz.query.get(id)
+     marks=[]
+     user_response=[]
+     correct_answer=[]
+     is_passed=True
+     for question in questions:
+          ans=request.form.get(f'{question.id}')
+          user_response.append(ans)
+          correct_answer.append(question.Answer)
+          if ans and int(ans)==question.Answer_option_no:
+               marks.append(1)
+          else:
+               marks.append(0)
+     score=sum(marks)
+     if quiz.Qualifying_marks:
+          if score<quiz.Qualifying_marks:
+               is_passed=False
+     user_id = session.get('user_id')
+     score_db=Scores(user_id=user_id,quiz_id=quiz.id,total_scored=score,is_passed=is_passed)
+     db.session.add(score_db)  
+     db.session.commit()
+       
+     return render_template('display_result.html',questions=questions,quiz=quiz,score=score,user_response=user_response,correct_answer=correct_answer,marks=marks)
+
+
+
 

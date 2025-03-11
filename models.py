@@ -57,12 +57,12 @@ class Questions(db.Model):
     Option_3=db.Column(db.String(500),nullable=False)
     Option_4=db.Column(db.String(500),nullable=False)
     Answer_option_no=db.Column(db.Integer,nullable=False)
+    Answer=db.Column(db.String(500),nullable=False)
 
 class Scores(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     quiz_id=db.Column(db.Integer,db.ForeignKey('quiz.id',ondelete="CASCADE"),nullable=False)
     user_id=db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False)
-    time_stamp_of_event=db.Column(db.DateTime,nullable=False)
     total_scored=db.Column(db.Integer,nullable=False)
     is_passed=db.Column(db.Boolean)
 

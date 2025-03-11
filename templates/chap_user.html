@@ -1,0 +1,46 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Chapters
+{% endblock %}       
+
+        
+{% block BODY %} 
+
+<div style="text-align: right;">
+    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
+    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
+</div>
+
+<h5 class="display-5">Chapters of {{subject.Name}}</h5>
+
+
+<table class="table table-striped ">
+    <thead class='table-info'>
+        <tr>
+            <th>Chapter ID</th>
+            <th>Chapter Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for chapter in chapters%}
+        <tr>
+            <td>{{chapter.id}}</td>
+            <td>{{chapter.Name}}</td>
+            <td>{{chapter.Description}}</td>
+            <td>
+                <div>
+                <a href="{{url_for('display_quiz_user',id=chapter.id)}}" class="btn btn-primary">
+                Quizzes</a>
+             </div>
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+
+</table>
+   
+
+{% endblock %} 

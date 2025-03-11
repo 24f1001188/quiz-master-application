@@ -7,6 +7,37 @@
         
 {% block BODY %} 
    <h2> Welcome {{user.Full_Name}} !! </h2>
+   <div style="text-align: right;">
    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
     <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
+</div>
+    <h4 class="display-4">Subjects</h4>
+
+
+<table class="table table-striped ">
+    <thead class='table-info'>
+        <tr>
+            <th>Subject ID</th>
+            <th>Subject Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects%}
+        <tr>
+            <td>{{subject.id}}</td>
+            <td>{{subject.Name}}</td>
+            <td>{{subject.Description}}</td>
+            <td>
+                <div>
+                <a href="{{url_for('display_chap_user',id=subject.id)}}" class="btn btn-primary">
+                Chapters</a>
+            </div>
+        </td>
+    </tr>
+    {%endfor%}
+</tbody>
+
+</table>
 {% endblock %} 

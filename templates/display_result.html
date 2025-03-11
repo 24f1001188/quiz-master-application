@@ -1,0 +1,37 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Result
+{% endblock %}       
+
+        
+{% block BODY %} 
+
+<div style="text-align: right;">
+    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
+    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
+ </div>
+ 
+
+<h2 style="color: #ff8533;"><strong>Feedback: </strong></h2><br>
+
+    {% for question in questions %}
+    <fieldset>
+            <legend>{{ loop.index }}.{{ question.question_statement }}</legend>
+             1.{{ question.Option_1 }}<br>
+             2.{{ question.Option_2 }}<br>
+             3.{{ question.Option_3 }}<br>
+             4.{{ question.Option_4 }}<br>
+            <br>
+            <h5>Your answer : Option {{user_response[loop.index0]}}</h5>
+            <h5>Correct answer : Option {{question.Answer_option_no}} -> {{correct_answer[loop.index0]}}</h5>
+            <h5 style="color: #ff3377;">Score for the question:{{marks[loop.index0]}}</h5>
+        </fieldset>
+        <br>
+    {% endfor %}
+    <h3 style="color: #ff8533;">Total marks={{score}}</h3>
+   
+<br>
+<a href="{{ url_for('user_dashboard') }}"><button type="button" class="btn btn-outline-secondary">Dashboard</button></a>
+<br><br><br>
+{% endblock %} 

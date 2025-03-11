@@ -1,0 +1,48 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Questions
+{% endblock %}       
+
+        
+{% block BODY %} 
+
+<div style="text-align: right;">
+    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
+    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
+ </div>
+ <div>
+    <h2><i class="fas fa-clock" style="color: #ff3377;"></i> 0{{quiz.time_duration}}</h2>
+</div><br>
+
+<h5 class="display-5">Start your Quiz!! </h5><br>
+
+
+<form action="" method="POST" class="form">
+    {% for question in questions %}
+        <fieldset>
+            <legend>{{ loop.index }}.{{ question.question_statement }}</legend>
+            <label for="1">
+                <input type="radio" name="{{question.id}}" value="1">
+                {{ question.Option_1 }}
+            </label><br>
+            <label for="2">
+                <input type="radio" name="{{question.id}}" value="2">
+                {{ question.Option_2 }}
+            </label><br>
+            <label for="3">
+                <input type="radio" name="{{question.id}}" value="3">
+                {{ question.Option_3 }}
+            </label><br>
+            <label for="4">
+                <input type="radio" name="{{question.id}}" value="4">
+                {{ question.Option_4 }}
+            </label><br>
+        </fieldset>
+        <br>
+    {% endfor %}
+    <button type="submit" class="btn btn-outline-primary">Submit Quiz</button>
+</form><br><br><br>
+   
+
+{% endblock %} 

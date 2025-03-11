@@ -30,6 +30,7 @@
             <th>Option 3</th>
             <th>Option 4</th>
             <th>Answer Option No</th>
+            <th>Answer</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -43,6 +44,7 @@
             <td>{{question.Option_3}}</td>
             <td>{{question.Option_4}}</td>
             <td>{{question.Answer_option_no}}</td>
+            <td>{{question.Answer}}</td>
             <td>
                 <div>
                 <a href="{{url_for('edit_question',id=question.id)}}" class="btn btn-primary">
