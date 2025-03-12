@@ -23,6 +23,7 @@
             <th>Duration</th>
             <th>Remarks</th>
             <th>Qualifying marks</th>
+            <th>Total marks</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -33,13 +34,15 @@
             <td>{{quiz.date_of_quiz}}</td>
             <td>{{quiz.time_duration}}</td>
             <td>{{quiz.Remarks}}</td>
+            <td>{{quiz.total_marks}}</td>
             <td>{{quiz.Qualifying_marks}}</td>
             <td>
                 <div>
-                <a href="{{url_for('display_questions_user',id=quiz.id)}}" class="btn btn-primary">
+                <a href="{{url_for('display_past_quiz_attempts_user',quiz_id=quiz.id)}}" class="btn btn-primary" >
+                VIEW</a>
+                <a href="{{url_for('display_questions_user',id=quiz.id)}}" class="btn btn-success" >
                 Start</a>
-                    
-                </a>
+                
              </div>
             </td>
         </tr>
@@ -50,3 +53,4 @@
    
 
 {% endblock %} 
+

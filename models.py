@@ -63,6 +63,7 @@ class Scores(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     quiz_id=db.Column(db.Integer,db.ForeignKey('quiz.id',ondelete="CASCADE"),nullable=False)
     user_id=db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False)
+    time_stamp_of_event=db.Column(db.DateTime,nullable=False)
     total_scored=db.Column(db.Integer,nullable=False)
     is_passed=db.Column(db.Boolean)
 

@@ -1,4 +1,4 @@
-from flask import render_template,request,redirect,url_for,flash,session
+from flask import render_template,request,redirect,url_for,flash,session,jsonify
 from app import app
 from models import db,Admin,User,Subject,Chapter,Quiz,Questions,Scores
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -64,7 +64,7 @@ def admin_login_post():
     session['admin_id']=admin.id
     flash('Logged in Successfully!!')
 
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('admin_dashboard',id=admin.id))
 
 @app.route('/new_user_registration')
 def new_user_registration():
@@ -254,7 +254,7 @@ def add_sub_post():
      subject=Subject(Name=sub_name,Description=des)
      db.session.add(subject)
      db.session.commit()
-
+     admin=Admin.query.first()
      flash('Subject added successfully!!')
      return redirect(url_for('admin_dashboard'))
 
@@ -283,6 +283,7 @@ def edit_sub_post(id):
      sub.Name=name
      sub.Description=des
      db.session.commit()
+     admin=Admin.query.first()
      flash('Updated subject successfully!!')
      return redirect(url_for('admin_dashboard'))
 
@@ -293,7 +294,7 @@ def delete_sub(id):
      if sub:
         db.session.delete(sub)
         db.session.commit()
-    
+     admin=Admin.query.first()
      flash('Subject deleted Successfully!!')
      return redirect(url_for('admin_dashboard'))
 
@@ -590,11 +591,35 @@ def display_questions_user_post(id):
           if score<quiz.Qualifying_marks:
                is_passed=False
      user_id = session.get('user_id')
-     score_db=Scores(user_id=user_id,quiz_id=quiz.id,total_scored=score,is_passed=is_passed)
+     timestamp=datetime.now()
+     if is_passed:
+          status='passed'
+     else:
+          status='failed'
+     score_db=Scores(time_stamp_of_event=timestamp,user_id=user_id,quiz_id=quiz.id,total_scored=score,is_passed=is_passed)
      db.session.add(score_db)  
      db.session.commit()
        
-     return render_template('display_result.html',questions=questions,quiz=quiz,score=score,user_response=user_response,correct_answer=correct_answer,marks=marks)
+     return render_template('display_result.html',status=status,questions=questions,quiz=quiz,score=score,user_response=user_response,correct_answer=correct_answer,marks=marks)
+
+@app.route('/display/past_quiz_attempts/user/<int:quiz_id>')
+@user_auth
+def display_past_quiz_attempts_user(quiz_id):
+     user_id=session.get('user_id')
+     user=User.query.get(user_id)
+     quiz=Quiz.query.get(quiz_id)
+     chap_id=quiz.chapter_id
+     chapter=Chapter.query.get(chap_id)
+     subject=Subject.query.get(chapter.subject_id)
+     chap_name=chapter.Name
+     attempts=Scores.query.filter_by(user_id=user_id,quiz_id=quiz_id).order_by(Scores.time_stamp_of_event.desc()).all()
+     tot_attempts = len(attempts)
+     avg = sum(a.total_scored for a in attempts) / tot_attempts if tot_attempts > 0 else 0
+     avg_score=round(avg)
+     return render_template('display_attempts_user.html',subject=subject,avg_score=avg_score,ch_name=chap_name,attempts=attempts,quiz=quiz,user=user)
+
+     
+     
 
 
 
