@@ -1,0 +1,25 @@
+{% extends 'basic_layout.html' %}
+  
+{% block TITLE %}
+    Quiz Details
+{% endblock %}       
+
+{%block NAVBAr%}
+{%include 'navbar_user.html'%}
+{% endblock %}   
+      
+
+{% block BODY %} 
+
+ <h2 style="color: #5c5cca;">Quiz Details</h2><br>
+ <div style="text-align: left;">
+        <h5><span style="color: #ff334e;">Quiz ID:</span> {{ quiz.id }}</h5>
+        <h5><span style="color: #ff334e;">Subject:</span> {{ subject.Name }}</h5>
+        <h5><span style="color: #ff334e;">Chapter:</span> {{ ch_name }}</h5>
+        <h5><span style="color: #ff334e;">Total Marks:</span> {{ quiz.total_marks }}</h5>
+        <h5><span style="color: #ff334e;">Scheduled Date:</span> {{ quiz.date_of_quiz }}</h5>
+        <h5><span style="color: #ff334e;">Duration (hh:mm):</span> 0{{ quiz.time_duration }}</h5>
+ </div><br>
+
+ {% endblock %}       
+

@@ -2,7 +2,7 @@ from flask import render_template,request,redirect,url_for,flash,session,jsonify
 from app import app
 from models import db,Admin,User,Subject,Chapter,Quiz,Questions,Scores
 from werkzeug.security import generate_password_hash,check_password_hash
-from datetime import datetime
+from datetime import datetime,date
 from functools import wraps
 import re
 
@@ -147,13 +147,25 @@ def admin_auth(func):
 @user_auth
 def user_dashboard():
         user=User.query.get(session['user_id'])
+
+        query=request.args.get('query')
+        if query:
+             subjects=Subject.query.filter(Subject.Name.ilike(f'%{query}%'))
+             return render_template('user_dashboard.html',user=user,subjects=subjects)
         subjects=Subject.query.all()
+
         return render_template('user_dashboard.html',user=user,subjects=subjects)
 
 @app.route('/admin_dashboard')
 @admin_auth
 def admin_dashboard():
         admin=Admin.query.get(session['admin_id'])
+
+        query=request.args.get('query')
+        if query:
+             subjects=Subject.query.filter(Subject.Name.ilike(f'%{query}%'))
+             return render_template('admin_dashboard.html',admin=admin,subjects=subjects)
+
         subjects=Subject.query
         return render_template('admin_dashboard.html',admin=admin,subjects=subjects)
     
@@ -262,6 +274,12 @@ def add_sub_post():
 @admin_auth
 def display_chap(id):
      subject=Subject.query.get(id)
+
+     query=request.args.get('query')
+     if query:
+            chapters=Chapter.query.filter(Chapter.Name.ilike(f'%{query}%'))
+            return render_template('chap.html',subject=subject,chapters=chapters)
+
      chapters=Chapter.query.filter_by(subject_id=id)
      return render_template('chap.html',subject=subject,chapters=chapters)
 
@@ -364,7 +382,24 @@ def delete_chap(id):
 @admin_auth
 def display_quiz(id):
      chapter=Chapter.query.get(id)
-     quizzes=Quiz.query.filter_by(chapter_id=id)
+     
+     parameter=request.args.get('parameter')
+     query=request.args.get('query')
+
+     if parameter=="date":
+          quizzes=Quiz.query.filter(Quiz.date_of_quiz.ilike(f'%{query}%'),Quiz.chapter_id==id).all()
+          return render_template('quiz.html',quizzes=quizzes,chapter=chapter)
+     
+     if parameter=="id":
+          quizzes=Quiz.query.filter(Quiz.id==query,Quiz.chapter_id==id).all()
+          return render_template('quiz.html',quizzes=quizzes,chapter=chapter)
+     
+     if parameter=="marks":
+          quizzes=Quiz.query.filter(Quiz.total_marks==query,Quiz.chapter_id==id).all()
+          print(query)
+          return render_template('quiz.html',quizzes=quizzes,chapter=chapter)
+
+     quizzes=Quiz.query.filter_by(chapter_id=id).order_by(Quiz.date_of_quiz.desc()).all()
      return render_template('quiz.html',quizzes=quizzes,chapter=chapter)
 
 @app.route('/add/quiz/<int:id>')
@@ -406,6 +441,18 @@ def add_quiz_post(id):
 @admin_auth
 def display_questions(id):
      quiz=Quiz.query.get(id)
+
+     parameter=request.args.get('parameter')
+     query=request.args.get('query')
+
+     if parameter=="question":
+          questions=Questions.query.filter(Questions.question_statement.ilike(f'%{query}%'),Questions.quiz_id==id)
+          return render_template('questions.html',quiz=quiz,questions=questions)
+     
+     if parameter=="id":
+          questions=Questions.query.filter(Questions.id==query,Questions.quiz_id==id)
+          return render_template('questions.html',quiz=quiz,questions=questions)
+     
      questions=Questions.query.filter_by(quiz_id=id)
      return render_template('questions.html',quiz=quiz,questions=questions)
 
@@ -545,22 +592,60 @@ def delete_question(id):
 @app.route('/display/user_details')
 @admin_auth
 def display_user_details():
+
+     parameter=request.args.get('parameter')
+     query=request.args.get('query')
+
+     if parameter=='name':
+          users=User.query.filter(User.Full_Name.ilike(f'%{query}%')).all()
+          return render_template('user_details.html',users=users)
+     if parameter=='id':
+          users=User.query.filter(User.id.ilike(f'%{query}%')).all()
+          return render_template('user_details.html',users=users)
+
+     if parameter=='username':
+          users=User.query.filter(User.username.ilike(f'%{query}%')).all()
+          return render_template('user_details.html',users=users)
+
      users=User.query.all()
      return render_template('user_details.html',users=users)
 
 @app.route('/display/chapters/user/<int:id>')
 @user_auth
 def display_chap_user(id):
-     chapters=Chapter.query.filter_by(subject_id=id)
      subject=Subject.query.get(id)
+
+     query=request.args.get('query')
+     if query:
+            chapters=Chapter.query.filter(Chapter.Name.ilike(f'%{query}%'))
+            return render_template('chap_user.html',subject=subject,chapters=chapters)
+     
+     chapters=Chapter.query.filter_by(subject_id=id)
      return render_template('chap_user.html',chapters=chapters,subject=subject)
 
 @app.route('/display/quiz/user/<int:id>')
 @user_auth
 def display_quiz_user(id):
-     quizzes=Quiz.query.filter_by(chapter_id=id)
      chapter=Chapter.query.get(id)
-     return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+
+     parameter=request.args.get('parameter')
+     query=request.args.get('query')
+
+     if parameter=="date":
+          quizzes=Quiz.query.filter(Quiz.date_of_quiz.ilike(f'%{query}%'),Quiz.chapter_id==id).all()
+          return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+     
+     if parameter=="id":
+          quizzes=Quiz.query.filter(Quiz.id==query,Quiz.chapter_id==id).all()
+          return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+     
+     if parameter=="marks":
+          quizzes=Quiz.query.filter(Quiz.total_marks==query,Quiz.chapter_id==id).all()
+          return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+     
+     quizzes=Quiz.query.filter_by(chapter_id=id).order_by(Quiz.date_of_quiz.desc()).all()
+     today=date.today()
+     return render_template('quiz_user.html',today=today,quizzes=quizzes,chapter=chapter)
 
 @app.route('/display/questions/user/<int:id>')
 @user_auth
@@ -608,17 +693,26 @@ def display_past_quiz_attempts_user(quiz_id):
      user_id=session.get('user_id')
      user=User.query.get(user_id)
      quiz=Quiz.query.get(quiz_id)
-     chap_id=quiz.chapter_id
-     chapter=Chapter.query.get(chap_id)
-     subject=Subject.query.get(chapter.subject_id)
-     chap_name=chapter.Name
      attempts=Scores.query.filter_by(user_id=user_id,quiz_id=quiz_id).order_by(Scores.time_stamp_of_event.desc()).all()
      tot_attempts = len(attempts)
      avg = sum(a.total_scored for a in attempts) / tot_attempts if tot_attempts > 0 else 0
      avg_score=round(avg)
-     return render_template('display_attempts_user.html',subject=subject,avg_score=avg_score,ch_name=chap_name,attempts=attempts,quiz=quiz,user=user)
+     return render_template('display_attempts_user.html',avg_score=avg_score,attempts=attempts,quiz=quiz,user=user)
 
+@app.route('/display/quiz_details/<int:quiz_id>')
+@user_auth
+def display_quiz_details(quiz_id):
      
+     quiz=Quiz.query.get(quiz_id)
+     chap_id=quiz.chapter_id
+     chapter=Chapter.query.get(chap_id)
+     subject=Subject.query.get(chapter.subject_id)
+     chap_name=chapter.Name
+
+     return render_template('quiz_details.html',subject=subject,ch_name=chap_name,quiz=quiz)
+
+
+    
      
 
 

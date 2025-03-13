@@ -2,16 +2,16 @@
   
 {% block TITLE %}
     User Dashboard
-{% endblock %}       
+{% endblock %}  
 
-        
+{%block NAVBAR%}
+{%include 'navbar_user.html'%}
+{% endblock %}  
+
 {% block BODY %} 
-   <h2> Welcome {{user.Full_Name}} !! </h2>
-   <div style="text-align: right;">
-   <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
-</div>
+   <h3 class="display-3" style="color: #ae68eb;"> Welcome {{user.Full_Name}} !! </h3>
     <h4 class="display-4">Subjects</h4>
+    {%include 'search.html'%}<br>
 
 
 <table class="table table-striped ">

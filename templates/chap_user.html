@@ -4,16 +4,15 @@
     Chapters
 {% endblock %}       
 
+{%block NAVBAR%}
+{%include 'navbar_user.html'%}
+{% endblock %}   
+
         
 {% block BODY %} 
 
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
-</div>
-
 <h5 class="display-5">Chapters of {{subject.Name}}</h5>
-
+{%include 'search.html'%}<br>
 
 <table class="table table-striped ">
     <thead class='table-info'>

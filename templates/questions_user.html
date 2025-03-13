@@ -4,13 +4,13 @@
     Questions
 {% endblock %}       
 
+{%block NAVBAR%}
+{%include 'navbar_user.html'%}
+{% endblock %}   
+
         
 {% block BODY %} 
 
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
- </div>
  <div>
     <h2><i class="fas fa-clock" style="color: #ff3377;"></i> 0{{quiz.time_duration}}</h2>
 </div><br>

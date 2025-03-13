@@ -4,13 +4,20 @@
     Home
 {% endblock %} 
    
+{%block NAVBAR%}
+
+{% include 'navbar.html'%}
+
+{%endblock%}
+
 {% block BODY %}
 
-    <div>
-     <p><em>Quiz your way to success!</em></p>
-    </div>
-    <a href="{{ url_for('user_login') }}"><button>USER LOGIN</button></a>
-    <a href="{{ url_for('admin_login')}}"><button>ADMIN LOGIN</button></a>
-    <a href="{{ url_for('new_user_registration')}}"><button>REGISTER</button></a>
+    <div style="text-align:center;">
+     <h3><em>Quiz your way to success!</em></h3>
+     <a href="{{ url_for('user_login') }}"><button class="btn btn-primary">USER LOGIN</button></a>
+    <a href="{{ url_for('admin_login')}}"><button class="btn btn-primary">ADMIN LOGIN</button></a>
+    <a href="{{ url_for('new_user_registration')}}"><button class="btn btn-secondary">REGISTER</button></a>
 
+    </div>
+    
 {% endblock %}

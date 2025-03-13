@@ -4,6 +4,12 @@
     Set Credentials
 {% endblock %} 
 
+{%block NAVBAR%}
+
+{% include 'navbar.html'%}
+
+{%endblock%}
+
 {% block BODY %}
         <h2>Set Username and Password</h2>
         <form action="{{ url_for('submit_registration') }}" method="POST">
@@ -20,7 +26,7 @@
             <input type="hidden" name="qualification" value="{{ qualification }}">
             <input type="hidden" name="dob" value="{{ dob }}">
 
-            <button type="submit">Finish</button>
+            <button type="submit" class="btn btn-primary">Finish</button>
         </form>
    
 {% endblock %}

@@ -4,16 +4,15 @@
     Quizzes
 {% endblock %}       
 
-        
-{% block BODY %} 
+{%block NAVBAR%}
+{%include 'navbar_user.html'%}
+{% endblock %}   
 
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
-</div>
+{% block BODY %} 
 
 <h5 class="display-5">Quizzes of {{chapter.Name}}</h5>
 
+{%include 'search_quiz.html'%}<br>
 
 <table class="table table-striped ">
     <thead class='table-info'>
@@ -22,8 +21,8 @@
             <th>Date scheduled</th>
             <th>Duration</th>
             <th>Remarks</th>
-            <th>Qualifying marks</th>
             <th>Total marks</th>
+            <th>Qualifying marks</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -38,10 +37,20 @@
             <td>{{quiz.Qualifying_marks}}</td>
             <td>
                 <div>
-                <a href="{{url_for('display_past_quiz_attempts_user',quiz_id=quiz.id)}}" class="btn btn-primary" >
-                VIEW</a>
-                <a href="{{url_for('display_questions_user',id=quiz.id)}}" class="btn btn-success" >
-                Start</a>
+                    <a href="{{ url_for('display_quiz_details', quiz_id=quiz.id) }}" class="btn btn-primary">
+                        VIEW
+                    </a>
+                    {% if quiz.date_of_quiz == today %}
+                    <a href="{{ url_for('display_questions_user', id=quiz.id) }}" class="btn btn-success">
+                        START
+                    </a>
+                {% endif %}
+                {% if quiz.date_of_quiz <= today %}
+                    <a href="{{ url_for('display_past_quiz_attempts_user', quiz_id=quiz.id) }}" class="btn btn-info">
+                        ATTEMPTS
+                    </a>
+                {% endif %}
+                
                 
              </div>
             </td>

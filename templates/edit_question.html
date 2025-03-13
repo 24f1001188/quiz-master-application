@@ -4,6 +4,11 @@
     Edit Question
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar_admin.html'%}
+
+{%endblock%}
         
 {% block BODY %}
 
@@ -36,7 +41,7 @@
     </div><br>
     <div class="form-group">
         <label for="ans">Answer :</label>
-        <input type="text" name="ans" id="ans" required>
+        <input type="text" name="ans" id="ans" value={{question.Answer}} required>
     </div><br><br>
 
     <div class="form-group">

@@ -2,21 +2,28 @@
   
 {% block TITLE %}
     Change Password
+    
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar.html'%}
+
+{%endblock%}
         
 {% block BODY %} 
+
     <form actions="" method="POST" class="form">
         <div class="form-group">
-            <label for="curr_password">Current Password</label>
+            <label for="curr_password">Current Password:</label>
             <input type="password" name="curr_password" id="curr_password">
-        </div>
+        </div><br>
         <div class="form-group">
-            <label for="new_password">New Password</label>
+            <label for="new_password">New Password:</label>
             <input type="password" name="new_password" id="new_password">
-        </div>
+        </div><br>
         <div class="form-group">
-            <label for="confirm_password">Confirm New Password</label>
+            <label for="confirm_password">Confirm New Password:</label>
             <input type="password" name="confirm_new_password" id="confirm_new_password">
         </div><br>
         <div class="form-group">

@@ -4,6 +4,11 @@
     Admin Login
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar.html'%}
+
+{%endblock%}
         
  {% block BODY %}   
     
@@ -20,7 +25,7 @@
             <input type="password" id="password" name="password" required>
         </div><br>
         <div class="form-group">
-            <button type="submit">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </form><br>
     <div>

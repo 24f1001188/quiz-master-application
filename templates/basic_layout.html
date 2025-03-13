@@ -16,11 +16,15 @@
 </head>
 <body>
     <br>
-    <h1><strong>QUIZ MASTER</strong></h1><br>
+    <div>
+        {%block NAVBAR%}
+
+        {%endblock%}<br><br>
+    </div>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-info" role="alert">
             {{ message }}
         </div>
         {% endfor %}

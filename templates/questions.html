@@ -4,13 +4,14 @@
     Questions
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar_admin.html'%}
+
+{%endblock%}
         
 {% block BODY %} 
 
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
-</div>
 
 <a href="{{url_for('add_question',id=quiz.id)}}" class="btn btn-success">
     <i class="fas fa-add"></i>
@@ -19,6 +20,7 @@
 
 <h5 class="display-5">Questions </h5>
 
+{%include 'search_question.html'%}<br>
 
 <table class="table table-striped ">
     <thead class='table-info'>

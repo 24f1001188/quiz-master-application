@@ -4,11 +4,17 @@
     Logout
 {% endblock %} 
 
+{%block NAVBAR%}
+
+{% include 'navbar.html'%}
+
+{%endblock%}
+
 {% block BODY %}
         <div>
          <p><em>You have been logged out succesfully!!</em></p>
         </div>
         <div>
-            <a href="{{url_for('home')}}"><button>Home</button></a>
+            <a href="{{url_for('home')}}"><button class="btn btn-secondary">Home</button></a>
         </div>
 {% endblock %}

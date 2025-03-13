@@ -4,13 +4,14 @@
     Chapters
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar_admin.html'%}
+
+{%endblock%}
         
 {% block BODY %} 
 
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
-</div>
 
 <a href="{{url_for('add_chap',id=subject.id)}}" class="btn btn-success">
     <i class="fas fa-add"></i>
@@ -18,6 +19,7 @@
 </a>
 
 <h5 class="display-5">Chapters of {{subject.Name}}</h5>
+{%include 'search.html'%}<br>
 
 
 <table class="table table-striped ">

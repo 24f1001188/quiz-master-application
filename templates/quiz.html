@@ -4,13 +4,13 @@
     Quizzes
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar_admin.html'%}
+
+{%endblock%}
         
 {% block BODY %} 
-
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
-</div>
 
 <a href="{{url_for('add_quiz',id=chapter.id)}}" class="btn btn-success">
     <i class="fas fa-add"></i>
@@ -19,6 +19,7 @@
 
 <h5 class="display-5">Quizzes of {{chapter.Name}}</h5>
 
+{%include 'search_quiz.html'%}<br>
 
 <table class="table table-striped ">
     <thead class='table-info'>
@@ -27,6 +28,7 @@
             <th>Date scheduled</th>
             <th>Duration</th>
             <th>Remarks</th>
+            <th>Total marks</th>
             <th>Qualifying marks</th>
             <th>Actions</th>
         </tr>
@@ -38,6 +40,7 @@
             <td>{{quiz.date_of_quiz}}</td>
             <td>0{{quiz.time_duration}}</td>
             <td>{{quiz.Remarks}}</td>
+            <td>{{quiz.total_marks}}</td>
             <td>{{quiz.Qualifying_marks}}</td>
             <td>
                 <div>

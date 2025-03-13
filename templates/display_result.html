@@ -4,14 +4,12 @@
     Result
 {% endblock %}       
 
+{%block NAVBAR%}
+{%include 'navbar_user.html'%}
+{% endblock %}   
         
-{% block BODY %} 
 
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_user')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('user_logout')}}" class="btn btn-outline-danger">Logout</a>
- </div>
- 
+{% block BODY %} 
 
 <h2 style="color: #ff8533;"><strong>Feedback: </strong></h2><br>
 

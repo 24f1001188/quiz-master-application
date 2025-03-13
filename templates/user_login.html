@@ -4,6 +4,12 @@
     User Login
 {% endblock %} 
 
+{%block NAVBAR%}
+
+{% include 'navbar.html'%}
+
+{%endblock%}
+
 {% block BODY %}
     <div>
      <h2>User Login</h2>
@@ -18,11 +24,11 @@
             <input type="password" id="password" name="password" required>
         </div><br>
         <div class="form-group">
-            <button type="submit">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </form><br>
     <div>
-    <a href="{{url_for('home')}}"><button>Back</button></a>
+    <a href="{{url_for('home')}}"><button class="btn btn-secondary">Back</button></a>
     <a href="{{url_for('new_user_registration')}}"><em>New User?</em></a>
     </div>
 {% endblock %}

@@ -4,6 +4,12 @@
     New User Registration
 {% endblock %} 
 
+{%block NAVBAR%}
+
+{% include 'navbar.html'%}
+
+{%endblock%}
+
 {% block BODY %}
         <h2>New User Registration</h2>
         <form action="{{ url_for('reg_next_page') }}" method="POST">
@@ -16,7 +22,7 @@
             <label for="dob">DOB (dd/mm/yyyy)</label>
             <input type="date" name="dob" required><br><br>
     
-            <a href="{{ url_for('home') }}"><button type="button">Home</button></a>
-            <button type="submit">Next</button>
+            <a href="{{ url_for('home') }}"><button type="button" class="btn btn-secondary">Home</button></a>
+            <button type="submit" class="btn btn-secondary">Next</button>
         </form>
 {% endblock %}

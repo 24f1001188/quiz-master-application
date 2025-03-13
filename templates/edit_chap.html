@@ -4,6 +4,11 @@
     Edit Chapter
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar_admin.html'%}
+
+{%endblock%}
         
 {% block BODY %}
 
@@ -15,8 +20,8 @@
         <input type="text" name="Name" id="Name" value="{{chapter.Name}}" required>
     </div><br>
     <div class="form-group">
-        <label for="description">Description :</label>
-        <input type="text" name="Description" id="Description" value="{{chapter.Description}}" required>
+        <label for="description" style="display: block;">Description :</label>
+        <textarea rows="5" cols="50" name="Description" id="Description"  required>{{chapter.Description}}</textarea>
     </div><br><br>
     <div class="form-group">
         <button type="submit" class="btn btn-success">Update</button>

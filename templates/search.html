@@ -1,0 +1,17 @@
+<div class="container-fluid mt-2" style="text-align: center;">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="">
+                <div class="input-group">
+                    {% block dropdown %}
+
+                    {%endblock%}
+                    <input type="text" name="query" class="form-control" placeholder="Search">
+                    <span class="input-grp-btn">
+                        <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

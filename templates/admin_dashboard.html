@@ -4,23 +4,21 @@
     Admin Dashboard
 {% endblock %}       
 
+{%block NAVBAR%}
+
+{% include 'navbar_admin.html'%}
+
+{%endblock%}
         
 {% block BODY %} 
 
-<div style="text-align: right;">
-    <a href="{{url_for('display_user_details')}}" class="btn btn-outline-success">User Details</a>
-    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-secondary">Change Password</a>
-    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
-    
-</div>
-
-<h3 class="display-3">Admin Dashboard</h3>
+<h3 class="display-3" style="color: #ae68eb;"><strong>Welcome Admin!</strong></h3>
 <a href="{{url_for('add_sub')}}" class="btn btn-success">
     <i class="fas fa-add"></i>
     ADD
 </a>
 <h4 class="display-4">Subjects</h4>
-
+{%include 'search.html'%}<br>
 
 <table class="table table-striped ">
     <thead class='table-info'>

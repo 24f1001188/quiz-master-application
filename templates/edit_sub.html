@@ -4,7 +4,12 @@
     Edit Subject
 {% endblock %}       
 
-        
+{%block NAVBAR%}
+
+{% include 'navbar_admin.html'%}
+
+{%endblock%}        
+
 {% block BODY %}
 
 <h5 class="display-5">Edit Subject</h5><br>
@@ -15,8 +20,8 @@
         <input type="text" name="Name" id="Name" value={{subject.Name}} required>
     </div><br>
     <div class="form-group">
-        <label for="description">Description :</label>
-        <input type="text" name="Description" id="Description" value={{subject.Description}} required>
+        <label for="description" style="display: block;">Description :</label>
+        <textarea rows="5" cols="50" name="Description" id="Description"  required>{{subject.Description}}</textarea>
     </div><br><br>
     <div class="form-group">
         <button type="submit" class="btn btn-success">Update</button>

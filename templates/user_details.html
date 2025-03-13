@@ -4,17 +4,14 @@
     Users
 {% endblock %}       
 
+{% block NAVBAR %}
+    {%include 'navbar_admin.html'%}
+{% endblock %}
         
 {% block BODY %} 
 
-<div style="text-align: right;">
-    <a href="{{url_for('change_pswd_admin')}}" class="btn btn-outline-danger">Change Password</a>
-    <a href="{{url_for('admin_logout')}}" class="btn btn-outline-danger">Logout</a> 
-</div>
-
-
-<h5 class="display-5">Users of Quiz Master Application</h5>
-
+<h5 class="display-5">Users of Quiz Master Application</h5><br>
+{%include 'search_user.html'%}<br>
 
 <table class="table table-striped ">
     <thead class='table-info'>
