@@ -630,21 +630,21 @@ def display_quiz_user(id):
 
      parameter=request.args.get('parameter')
      query=request.args.get('query')
-
+     today=date.today()
      if parameter=="date":
           quizzes=Quiz.query.filter(Quiz.date_of_quiz.ilike(f'%{query}%'),Quiz.chapter_id==id).all()
-          return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+          return render_template('quiz_user.html',today=today,quizzes=quizzes,chapter=chapter)
      
      if parameter=="id":
           quizzes=Quiz.query.filter(Quiz.id==query,Quiz.chapter_id==id).all()
-          return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+          return render_template('quiz_user.html',today=today,quizzes=quizzes,chapter=chapter)
      
      if parameter=="marks":
           quizzes=Quiz.query.filter(Quiz.total_marks==query,Quiz.chapter_id==id).all()
-          return render_template('quiz_user.html',quizzes=quizzes,chapter=chapter)
+          return render_template('quiz_user.html',today=today,quizzes=quizzes,chapter=chapter)
      
      quizzes=Quiz.query.filter_by(chapter_id=id).order_by(Quiz.date_of_quiz.desc()).all()
-     today=date.today()
+     
      return render_template('quiz_user.html',today=today,quizzes=quizzes,chapter=chapter)
 
 @app.route('/display/questions/user/<int:id>')
