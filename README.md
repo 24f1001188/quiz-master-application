@@ -124,8 +124,6 @@ Ensure that the following are installed:
 
 ### 1. Clone the Repository
 
-Replace `YOUR_GITHUB_USERNAME` with your GitHub username and use the actual repository name if it differs.
-
 ```bash
 git clone https://github.com/24f1001188/quiz-master-application.git
 cd quiz_master_24f1001188
