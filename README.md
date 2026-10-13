@@ -242,7 +242,8 @@ Potential improvements to extend the application include:
 
 **Hemalatha Baskar**
 
-Final-year B.Tech student in Computer Science and Engineering.
+- B.Tech in Computer Science and Engineering — IIITDM Kancheepuram
+- BS in Data Science and Applications — IIT Madras
 
 Interested in full-stack development, machine learning, artificial intelligence, and building practical software applications.
 
