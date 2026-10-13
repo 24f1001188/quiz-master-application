@@ -245,7 +245,7 @@ Potential improvements to extend the application include:
 - B.Tech in Computer Science and Engineering — IIITDM Kancheepuram
 - BS in Data Science and Applications — IIT Madras
 
-Interested in full-stack development, machine learning, artificial intelligence, and building practical software applications.
+Interested in Full-Stack Development, Artificial Intelligence, Machine Learning, Deep Learning, Natural Language Processing, and Generative AI, with a focus on building scalable software applications and intelligent solutions to real-world problems.
 
 ---
 
